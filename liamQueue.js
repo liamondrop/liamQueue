@@ -9,6 +9,7 @@
     working = false,
     tasks = [],
     _cb = {},
+    _noop = function () {},
     _isFunc = function (fn) {
       return 'function' === typeof fn;
     },
@@ -44,16 +45,16 @@
       },
       addTask: function (task, context) {
         var taskItem = {
-          task: task,
-          context: context || this
+          task: task || noop,
+          context: context || lq
         };
         tasks.push(taskItem);
         return lq;
       },
       addCallback: function (callback, context) {
         _cb = {
-          callback: callback,
-          context: context || this
+          callback: callback || noop,
+          context: context || lq
         };
         return lq;
       },
