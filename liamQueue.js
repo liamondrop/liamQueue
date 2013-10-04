@@ -45,7 +45,7 @@
       },
       addTask: function (task, context) {
         var taskItem = {
-          task: task || noop,
+          task: task || _noop,
           context: context || lq
         };
         tasks.push(taskItem);
@@ -53,7 +53,7 @@
       },
       addCallback: function (callback, context) {
         _cb = {
-          callback: callback || noop,
+          callback: callback || _noop,
           context: context || lq
         };
         return lq;
