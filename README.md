@@ -3,7 +3,7 @@ liamQueue
 
 Simple async queueing for Node.js or the browser
 
-in node:
+in Node:
 ```javascript
 var Q = require('./liamQueue'),
 	q = Q.Queue(2),
