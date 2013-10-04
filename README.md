@@ -39,7 +39,7 @@ in browser:
 ```
 <script src="liamQueue.js"></script>
 <script>
-var q = Q.Queue(2),
+var q = Queue(2),
 	pos = 0,
 	start;
 
