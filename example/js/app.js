@@ -3,6 +3,7 @@
   function TaskListViewModel() {
 
     function Task() {
+      // this is data for the individual tasks items in the UI
       var self = this;
       self.taskNumber = (taskNumber += 1);
       self.taskStatus = ko.observable('Pending');
@@ -34,6 +35,7 @@
         taskNumber = 0,
         delay = 0;
 
+    // some data
     root.tasks = ko.observableArray([]);
     root.queueSize = ko.observable(lq.size());
     root.inFlight = ko.observable(lq.inFlight());
@@ -51,6 +53,7 @@
       owner: root
     });
 
+    // some methods
     root.addTask = function () {
       var task = new Task();
       lq.addTask(task.onStart);
@@ -59,10 +62,11 @@
       delay = 0;
     };
     root.removeTask = function (task) {
-      root.tasks.remove(task);
+      root.tasks.remove(task); // this is strictly to remove tasks from the UI after completion
     };
     root.runQueue = lq.start;
 
+    // when queue has emptied out
     lq.addCallback(function () {
       root.inFlight(lq.inFlight());
       root.isRunning(lq.isRunning());
