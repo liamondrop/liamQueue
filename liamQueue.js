@@ -1,31 +1,31 @@
 ;(function (global) {
 
-  function liamQueue(parallelism) {
+  global.Queue = function liamQueue(parallelism) {
     if (undefined === parallelism || 1 > parallelism) {
       throw new Error("Parallelism cannot be less than 1.");
     }
 
-    var jobs = 0,
-    working = false,
-    tasks = [],
+    var _tasks = [],
+    _jobsRunning = 0,
+    _working = false,
     _cb = {},
     _noop = function () {},
     _isFunc = function (fn) {
       return 'function' === typeof fn;
     },
     _flush = function () {
-      if (tasks.length && jobs < parallelism) {
-        var item = tasks.shift();
-        jobs += 1;
+      if (_tasks.length && _jobsRunning < lq.parallelism) {
+        var item = _tasks.shift();
+        _jobsRunning += 1;
         setTimeout(function () {
-          working = true;
+          _working = true;
           try {
             if (_isFunc(item.task)) {
               item.task.call(item.context, item.task);
-              jobs -= 1;
+              _jobsRunning -= 1;
             }
-            if (tasks.length + jobs === 0 && _isFunc(_cb.callback)) {
-              working = false;
+            if (_tasks.length + _jobsRunning === 0 && _isFunc(_cb.callback)) {
+              _working = false;
               _cb.callback.call(_cb.context, _cb.callback);
             }
           } catch (err) {}
@@ -34,21 +34,22 @@
       }
     },
     lq = {
+      parallelism: parallelism,
       size: function () {
-        return tasks.length;
+        return _tasks.length;
       },
       isRunning: function () {
-        return working;
+        return _working;
       },
       inFlight: function () {
-        return jobs;
+        return _jobsRunning;
       },
       addTask: function (task, context) {
         var taskItem = {
           task: task || _noop,
           context: context || lq
         };
-        tasks.push(taskItem);
+        _tasks.push(taskItem);
         return lq;
       },
       addCallback: function (callback, context) {
@@ -65,7 +66,5 @@
     };
     return lq;
   };
-
-  global.Queue = liamQueue;
 
 }(typeof exports != 'undefined' && exports !== null ? exports : window));
