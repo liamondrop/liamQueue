@@ -1,7 +1,7 @@
 liamQueue
 =========
 
-Simple async queueing for Node.js or the browser. [Example page](http://liamondrop.github.io/queue_example/).
+Simple async queueing for Node.js or the browser. Checkout the [Example page](http://liamondrop.github.io/queue_example/) with a simple KnockoutJS view.
 
 in Node:
 ```javascript
